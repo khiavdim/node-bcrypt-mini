@@ -1,22 +1,47 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import './App.css';
+import React, { Component } from "react";
+import axios from "axios";
+import "./App.css";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
       loggedInUser: {}
     };
   }
 
-  async login() {}
+  async login() {
+    let res = await axios.post("/auth/login", {
+      email: this.state.email,
+      password: this.state.password
+    });
+    this.setState({
+      loggedInUser: res.data,
+      email: "",
+      password: ""
+    });
+  }
 
-  async signup() {}
+  async signup() {
+    let res = await axios.post("/auth/signup", {
+      email: this.state.email,
+      password: this.state.password
+    });
+    this.setState({
+      loggedInUser: res.data,
+      email: "",
+      password: ""
+    });
+  }
 
-  logout() {}
+  logout() {
+    axios.get("/auth/logout");
+    this.setState({
+      loggedInUser: {}
+    });
+  }
 
   render() {
     let { loggedInUser, email, password } = this.state;
@@ -50,9 +75,9 @@ class App extends Component {
 
         <hr />
 
-        <h4>Status: {loggedInUser.email ? 'Logged In' : 'Logged Out'}</h4>
+        <h4>Status: {loggedInUser.email ? "Logged In" : "Logged Out"}</h4>
         <h4>User Data:</h4>
-        <p> {loggedInUser.email ? JSON.stringify(loggedInUser) : 'No User'} </p>
+        <p> {loggedInUser.email ? JSON.stringify(loggedInUser) : "No User"} </p>
         <br />
       </div>
     );
